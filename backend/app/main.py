@@ -67,6 +67,7 @@ class MidiRequest(BaseModel):
     melody: Optional[List[NoteEvent]] = None
     tempo: int = 120
     mood: str = "neutral"
+    instruments: Optional[dict] = None # {"chords": 0, "melody": 0, "bass": 33}
 
 def midi_to_json(file_path):
     """Parses a MIDI file into the JSON format expected by the frontend."""
@@ -239,7 +240,7 @@ def download_midi(request: MidiRequest, background_tasks: BackgroundTasks):
         progression_data = []
         
     # Generate MIDI file
-    file_path = create_midi_file(progression_data, request.tempo, request.mood)
+    file_path = create_midi_file(progression_data, request.tempo, request.mood, request.instruments)
     
     # Schedule file removal after response is sent
     background_tasks.add_task(remove_file, file_path)

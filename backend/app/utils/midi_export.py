@@ -93,7 +93,7 @@ def humanize_track(events, mood="neutral", is_chords=False):
             
     return humanized_events
 
-def create_midi_file(progression_data, tempo: int = 120, mood: str = "neutral"):
+def create_midi_file(progression_data, tempo: int = 120, mood: str = "neutral", instruments: dict = None):
     """
     Creates a MIDI file from the progression data.
     progression_data: 
@@ -103,7 +103,12 @@ def create_midi_file(progression_data, tempo: int = 120, mood: str = "neutral"):
     """
     mid = MidiFile()
     
-    # 1. Determine Tracks
+    # Default Instruments (General MIDI Program Numbers)
+    # 0: Acoustic Grand Piano
+    # 33: Electric Bass (finger)
+    # 26: Electric Guitar (jazz)
+    if instruments is None:
+        instruments = {"chords": 0, "melody": 0, "bass": 33}
     tracks_data = {}
     
     if isinstance(progression_data, list):
@@ -138,6 +143,13 @@ def create_midi_file(progression_data, tempo: int = 120, mood: str = "neutral"):
         # Set Tempo
         us_per_beat = int(60_000_000 / tempo)
         track.append(MetaMessage('set_tempo', tempo=us_per_beat))
+        
+        # Set Instrument (Program Change)
+        program_number = instruments.get(track_name, 0)
+        # Ensure valid MIDI program (0-127)
+        program_number = max(0, min(127, int(program_number)))
+        
+        track.append(Message('program_change', program=program_number, time=0, channel=channel))
         
         # Convert input data to MIDI events
         midi_events = []

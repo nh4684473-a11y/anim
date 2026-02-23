@@ -13,6 +13,28 @@ const MOODS = [
   "Walker"
 ];
 
+const INSTRUMENTS = [
+  { value: 0, label: "Acoustic Grand Piano" },
+  { value: 4, label: "Electric Piano 1" },
+  { value: 5, label: "Electric Piano 2" },
+  { value: 16, label: "Hammond Organ" },
+  { value: 24, label: "Acoustic Guitar (Nylon)" },
+  { value: 25, label: "Acoustic Guitar (Steel)" },
+  { value: 26, label: "Electric Guitar (Jazz)" },
+  { value: 29, label: "Overdriven Guitar" },
+  { value: 32, label: "Acoustic Bass" },
+  { value: 33, label: "Electric Bass (Finger)" },
+  { value: 38, label: "Synth Bass 1" },
+  { value: 48, label: "String Ensemble 1" },
+  { value: 50, label: "Synth Strings 1" },
+  { value: 52, label: "Choir Aahs" },
+  { value: 56, label: "Trumpet" },
+  { value: 66, label: "Tenor Sax" },
+  { value: 80, label: "Lead 1 (Square)" },
+  { value: 81, label: "Lead 2 (Sawtooth)" },
+  { value: 88, label: "Pad 1 (New Age)" },
+];
+
 const Select = ({ label, name, value, options, onChange }) => (
   <div className="flex flex-col gap-2">
     <label className="text-gray-400 text-xs font-bold uppercase tracking-wider">{label}</label>
@@ -183,6 +205,38 @@ const Controls = ({
                 />
             </div>
         )}
+      </div>
+
+      {/* Section: Instruments */}
+      <div className="space-y-4">
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <span className="w-8 h-[1px] bg-gray-700"></span>
+          Instruments
+          <span className="flex-1 h-[1px] bg-gray-700"></span>
+        </h3>
+        <div className="bg-black/20 p-4 rounded-xl border border-white/5 space-y-4">
+            <Select 
+                label="Chords" 
+                name="chordInstrument" 
+                value={chordInstrument} 
+                options={INSTRUMENTS} 
+                onChange={(e) => setChordInstrument(parseInt(e.target.value))} 
+            />
+            <Select 
+                label="Melody" 
+                name="melodyInstrument" 
+                value={melodyInstrument} 
+                options={INSTRUMENTS} 
+                onChange={(e) => setMelodyInstrument(parseInt(e.target.value))} 
+            />
+            <Select 
+                label="Bass" 
+                name="bassInstrument" 
+                value={bassInstrument} 
+                options={INSTRUMENTS.filter(i => (i.value >= 32 && i.value <= 39) || i.value === 38)} 
+                onChange={(e) => setBassInstrument(parseInt(e.target.value))} 
+            />
+        </div>
       </div>
 
       {/* Section: Parameters */}

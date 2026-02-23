@@ -41,9 +41,9 @@ function App() {
   const [isGuitarLoaded, setIsGuitarLoaded] = useState(false);
   const [bassSampler, setBassSampler] = useState(null);
   const [isBassLoaded, setIsBassLoaded] = useState(false);
-  const [chordInstrument, setChordInstrument] = useState("piano");
-  const [melodyInstrument, setMelodyInstrument] = useState("piano");
-  const [bassInstrument, setBassInstrument] = useState("bass");
+  const [chordInstrument, setChordInstrument] = useState(0);
+  const [melodyInstrument, setMelodyInstrument] = useState(0);
+  const [bassInstrument, setBassInstrument] = useState(33);
   const [volume, setVolume] = useState(-6); // dB
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastPlayedNote, setLastPlayedNote] = useState(null);
@@ -313,14 +313,19 @@ function App() {
     const fallbackBass = audioContext.bass;
     
     // Select instrument based on user choice
-    const getInstrumentInstance = (name) => {
-        if (name === "piano" && isPianoLoaded && pianoSampler) return pianoSampler;
-        if (name === "guitar" && isGuitarLoaded && guitarSampler) return guitarSampler;
+    const getInstrumentInstance = (programId) => {
+        // Pianos (0-7) & Organs (16-23)
+        if ((programId <= 7 || (programId >= 16 && programId <= 23)) && isPianoLoaded && pianoSampler) return pianoSampler;
+        
+        // Guitars (24-31)
+        if (programId >= 24 && programId <= 31 && isGuitarLoaded && guitarSampler) return guitarSampler;
+        
         return fallbackSynth;
     };
     
-    const getBassInstance = (name) => {
-        if (name === "bass" && isBassLoaded && bassSampler) return bassSampler;
+    const getBassInstance = (programId) => {
+        // Basses (32-39)
+        if (programId >= 32 && programId <= 39 && isBassLoaded && bassSampler) return bassSampler;
         return fallbackBass;
     };
 
@@ -411,15 +416,20 @@ function App() {
     const fallbackBass = audioContext.bass;
     
     // Choose instrument instances
-    const getInstrumentInstance = (name) => {
-        if (name === "piano" && isPianoLoaded && pianoSampler) return pianoSampler;
-        if (name === "guitar" && isGuitarLoaded && guitarSampler) return guitarSampler;
+    const getInstrumentInstance = (programId) => {
+        // Pianos (0-7) & Organs (16-23)
+        if ((programId <= 7 || (programId >= 16 && programId <= 23)) && isPianoLoaded && pianoSampler) return pianoSampler;
+        
+        // Guitars (24-31)
+        if (programId >= 24 && programId <= 31 && isGuitarLoaded && guitarSampler) return guitarSampler;
+        
         return fallbackSynth;
     };
     
     // Separate Bass Getter
-    const getBassInstance = (name) => {
-        if (name === "bass" && isBassLoaded && bassSampler) return bassSampler;
+    const getBassInstance = (programId) => {
+        // Basses (32-39)
+        if (programId >= 32 && programId <= 39 && isBassLoaded && bassSampler) return bassSampler;
         return fallbackBass;
     };
 
@@ -619,7 +629,14 @@ function App() {
 
   const handleExport = async () => {
       if (!generatedData) return;
-      await downloadMidi(generatedData);
+      await downloadMidi({
+        ...generatedData,
+        instruments: {
+            chords: chordInstrument,
+            melody: melodyInstrument,
+            bass: bassInstrument
+        }
+      });
   };
 
   const handleLoadTrack = (trackData) => {

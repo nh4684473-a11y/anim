@@ -85,7 +85,6 @@ const Generator = ({
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
                                     <span className="text-sm font-bold text-white/90 tracking-wider">CHORDS</span>
-                                    <span className="text-xs text-white/40 ml-2">({chordInstrument === 'piano' ? 'Piano' : 'Guitar'})</span>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     {/* Volume Control */}
