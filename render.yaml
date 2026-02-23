@@ -1,27 +1,31 @@
-services: 
-   - type: web 
-     name: midi-backend 
-     env: docker 
-     region: oregon 
-     plan: free 
-     rootDir: backend 
-     dockerfilePath: ./Dockerfile 
-     envVars: 
-       - key: PORT 
-         value: 10000 
-       - key: ALLOWED_ORIGINS 
-         value: "*" 
- 
-   - type: web 
-     name: midi-frontend 
-     env: docker 
-     region: oregon 
-     plan: free 
-     rootDir: frontend 
-     dockerfilePath: ./Dockerfile 
-     envVars: 
-       - key: VITE_API_URL 
-         fromService: 
-           type: web 
-           name: midi-backend 
-           envVarKey: RENDER_EXTERNAL_URL
+services:
+  - type: web
+    name: midi-backend
+    env: docker
+    region: oregon
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: ALLOWED_ORIGINS
+        value: "*"
+
+staticSites:
+  - name: midi-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: midi-backend
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: NODE_VERSION
+        value: 20
