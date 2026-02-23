@@ -1,0 +1,7 @@
+fastapi>=0.68.0
+uvicorn>=0.15.0
+pydantic>=1.8.0
+mido>=1.2.10
+python-multipart>=0.0.5
+requests>=2.26.0
+gunicorn>=20.1.0

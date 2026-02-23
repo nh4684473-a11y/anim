@@ -1,0 +1,45 @@
+# Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesize
+
+# Node
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/dist/
+
+# MIDI Output
+test_batch_output/
+backend/midi_samples/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env
+backend/.env
+frontend/.env
+
+# Local Dev
+start_dev.sh
