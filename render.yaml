@@ -15,7 +15,7 @@ services:
        - key: ALLOWED_ORIGINS 
          value: "*" 
  
-   - type: static 
+   - type: web 
      name: midi-frontend 
      env: static 
      region: oregon 
