@@ -1,15 +1,12 @@
 services: 
    - type: web 
      name: midi-backend 
-     env: python 
+     env: docker 
      region: oregon 
      plan: free 
-     rootDirectory: backend 
-     buildCommand: pip install -r requirements.txt 
-     startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT 
+     rootDir: backend 
+     dockerfilePath: ./Dockerfile 
      envVars: 
-       - key: PYTHONPATH 
-         value: . 
        - key: PORT 
          value: 10000 
        - key: ALLOWED_ORIGINS 
@@ -17,12 +14,11 @@ services:
  
    - type: web 
      name: midi-frontend 
-     env: static 
+     env: docker 
      region: oregon 
      plan: free 
-     rootDirectory: frontend 
-     buildCommand: npm install && npm run build 
-     staticPublishPath: ./dist 
+     rootDir: frontend 
+     dockerfilePath: ./Dockerfile 
      envVars: 
        - key: VITE_API_URL 
          fromService: 
