@@ -61,7 +61,8 @@ export const downloadMidi = async (data) => {
                  chords: data.chords,
                  melody: data.melody,
                  tempo: data.tempo || 120,
-                 mood: data.mood || "neutral"
+                 mood: data.mood || "neutral",
+                 instruments: data.instruments || {}
              };
         }
 
