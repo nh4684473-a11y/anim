@@ -1,29 +1,31 @@
-services:
-  - type: web
-    name: midi-backend
-    env: python
-    region: oregon
-    plan: free
-    rootDirectory: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
-    envVars:
-      - key: PYTHONPATH
-        value: .
-      - key: PORT
-        value: 10000
-
-  - type: static
-    name: midi-frontend
-    env: static
-    region: oregon
-    plan: free
-    rootDirectory: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: midi-backend
-          property: url
+services: 
+   - type: web 
+     name: midi-backend 
+     env: python 
+     region: oregon 
+     plan: free 
+     rootDirectory: backend 
+     buildCommand: pip install -r requirements.txt 
+     startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT 
+     envVars: 
+       - key: PYTHONPATH 
+         value: . 
+       - key: PORT 
+         value: 10000 
+       - key: ALLOWED_ORIGINS 
+         value: "*" 
+ 
+   - type: static 
+     name: midi-frontend 
+     env: static 
+     region: oregon 
+     plan: free 
+     rootDirectory: frontend 
+     buildCommand: npm install && npm run build 
+     staticPublishPath: ./dist 
+     envVars: 
+       - key: VITE_API_URL 
+         fromService: 
+           type: web 
+           name: midi-backend 
+           property: url
