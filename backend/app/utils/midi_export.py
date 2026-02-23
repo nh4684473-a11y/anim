@@ -120,6 +120,8 @@ def create_midi_file(progression_data, tempo: int = 120, mood: str = "neutral", 
             tracks_data["chords"] = progression_data["chords"]
         if "melody" in progression_data:
             tracks_data["melody"] = progression_data["melody"]
+        if "bass" in progression_data:
+            tracks_data["bass"] = progression_data["bass"]
             
     # Ticks per beat (default is 480)
     ticks_per_beat = mid.ticks_per_beat

@@ -65,6 +65,7 @@ class MidiRequest(BaseModel):
     progression: Optional[List[ChordData]] = None
     chords: Optional[List[NoteEvent]] = None
     melody: Optional[List[NoteEvent]] = None
+    bass: Optional[List[NoteEvent]] = None
     tempo: int = 120
     mood: str = "neutral"
     instruments: Optional[dict] = None # {"chords": 0, "melody": 0, "bass": 33}
@@ -226,12 +227,14 @@ def download_midi(request: MidiRequest, background_tasks: BackgroundTasks):
     
     progression_data = {}
     
-    if request.chords or request.melody:
+    if request.chords or request.melody or request.bass:
         # New format
         if request.chords:
             progression_data["chords"] = [event.dict() for event in request.chords]
         if request.melody:
             progression_data["melody"] = [event.dict() for event in request.melody]
+        if request.bass:
+            progression_data["bass"] = [event.dict() for event in request.bass]
     elif request.progression:
         # Legacy format
         progression_data = [chord.dict() for chord in request.progression]
